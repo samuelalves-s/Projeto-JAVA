@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @Autowired
-    private IUserRepository iUserRepository;
+    private IUserRepository userRepository;
 
     @PostMapping("/")
     public ResponseEntity createUser(@RequestBody UserModel userModel) {
-        var user = this.iUserRepository.findByUsername(userModel.getUsername());
+        var user = this.userRepository.findByUsername(userModel.getUsername());
 
         if (user != null) {
             //Status da Requisição com mensagem de erro
@@ -33,8 +33,8 @@ public class UserController {
         var passwordHashred = BCrypt.withDefaults().hashToString(12, userModel.getPassword().toCharArray());
         userModel.setPassword(passwordHashred);
 
-        var userCreated = this.iUserRepository.save(userModel);
         //Status da requisição
+        var userCreated = this.userRepository.save(userModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(userCreated);
     }
 }
