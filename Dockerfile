@@ -1,17 +1,23 @@
-FROM ubuntu:latest AS build
+# ===== BUILD =====
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 
-RUN apt-get update
-RUN apt-get install openjdk-21-jdk -y
+WORKDIR /app
+
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
 COPY . .
+RUN mvn clean package -DskipTests
 
-RUN apt-get install maven -y
-RUN mvn clean install
 
-FROM eclipse-temurin:21-jdk-jammy
+# ===== RUNTIME =====
+FROM eclipse-temurin:21-jre-jammy
+
+WORKDIR /app
 
 EXPOSE 8080
 
-COPY --from=build /target/todolist-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/todolist-0.0.1-SNAPSHOT.jar app.jar
 
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
