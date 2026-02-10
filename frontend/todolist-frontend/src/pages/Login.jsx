@@ -1,10 +1,13 @@
 import {useState} from "react";
-import { Link } from "react-router-dom"
+import { Link , useNavigate } from "react-router-dom"
 
 function Login() {
     const [name , setName] = useState("")
     const [email , setEmail] = useState("")
     const [password , setPassword] = useState("")
+    const [username , setUsername] = useState("")
+
+    const navigate = useNavigate()
 
     function handleSubmit(e) {
         //Evita reload
@@ -14,12 +17,12 @@ function Login() {
         console.log({
             name,
             email,
-            password
+            password,
+            username
         })
+
+        navigate("/")
     }
-
-
-
 
     return (
         <div>
@@ -38,6 +41,10 @@ function Login() {
                         placeholder="Digite sua senha"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}/>
+                <input type="text"
+                       placeholder="Digite seu username"
+                       autoCapitalize="none"
+                       value={username} onChange={(e) => setUsername(e.target.value)}/>
                 <button type="submit"> Entrar </button>
             </form>
 
