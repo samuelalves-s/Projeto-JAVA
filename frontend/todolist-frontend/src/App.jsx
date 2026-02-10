@@ -1,9 +1,14 @@
-import './App.css'
+import Home from "./pages/Home.jsx"
+import Login from "./pages/Login.jsx"
 
 function App() {
-  return (
-      <h1> Esse é o primeiro teste </h1>
-  )
+  const isLogged = false; //Depois vem do backend
+
+  if(!isLogged) {
+    return <Login />
+  }
+
+  return <Home />
 }
 
 export default App
